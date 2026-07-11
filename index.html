@@ -1,152 +1,289 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Training Evaluation</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style> body { font-family: 'Sarabun', sans-serif; } </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบประเมินการสอบปฏิบัติ (Bleeding Control) - Red Theme</title>
+    <!-- Tailwind CSS สำหรับการจัดเลย์เอาต์และตกแต่งให้สวยงาม -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Prompt', sans-serif; 
+        }
+    </style>
 </head>
-<body class="bg-slate-100 min-h-screen p-4 md:p-8">
+<body class="bg-red-50/30 min-h-screen py-8 px-4">
 
-  <div class="max-w-6xl mx-auto space-y-6">
-    <!-- Top Nav -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60 gap-4">
-      <div>
-        <h1 class="text-2xl font-bold text-slate-800">Admin Dashboard</h1>
-        <p class="text-sm text-slate-500">สรุปภาพรวมและสถิติจากแบบประเมินผลฝึกอบรม (อัปเดต 8 หัวข้อ)</p>
-      </div>
-      <!-- เปลี่ยนทิศทางลิงก์กลับไปยังหน้าแรกโดยใช้ URL ของคุณ -->
-      <a href="https://script.google.com/macros/s/AKfycbxAz21-76L6H-vDnHTluMVN53aU2EnU2xHTHOF850JVr4H-SiBvGmfId0GTnhFPHqGBNw/exec" class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition">
-        ไปยังหน้าประเมินสำหรับผู้เรียน
-      </a>
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-red-100 overflow-hidden">
+        <!-- ส่วนหัว (Header) พร้อมโลโก้กากบาทกู้ชีพกู้ภัยสีแดงและธีมสีแดงเข้ม -->
+        <div class="bg-red-700 text-white p-8 text-center relative overflow-hidden">
+            <!-- Background Accent Shape -->
+            <div class="absolute right-0 bottom-0 w-32 h-32 bg-red-600 rounded-full translate-x-10 translate-y-10 opacity-40"></div>
+            <div class="absolute left-0 top-0 w-24 h-24 bg-red-800 rounded-full -translate-x-5 -translate-y-5 opacity-40"></div>
+            
+            <div class="relative z-10 flex flex-col items-center gap-4">
+                <!-- โลโก้ทางการแพทย์/กู้ชีพสีแดง -->
+                <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 border-2 border-red-200">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/10342649494353339852_0" alt="First Aid Red Cross Logo" class="object-contain w-full h-full">
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-wide">ระบบบันทึกผลการสอบปฏิบัติ</h1>
+                    <p class="text-red-100 text-sm md:text-base mt-1.5 font-light">หลักสูตรการควบคุมสถานการณ์และการห้ามเลือดขั้นรุนแรง (Bleeding Control)</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="evaluationForm" class="p-6 md:p-8 space-y-8">
+            <!-- ส่วนที่ 1: ข้อมูลผู้เข้าสอบ -->
+            <div class="bg-red-50/50 p-5 rounded-2xl border border-red-100">
+                <h2 class="text-lg font-bold text-red-900 mb-4 flex items-center gap-2">
+                    <span class="w-2.5 h-5 bg-red-600 rounded-full"></span> 
+                    ข้อมูลผู้เข้าสอบ
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-red-800 uppercase tracking-wider mb-1.5">ชื่อจริง</label>
+                        <input type="text" name="firstName" required placeholder="กรอกชื่อจริง" class="w-full px-4 py-2.5 bg-white border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm transition-all shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-red-800 uppercase tracking-wider mb-1.5">นามสกุล</label>
+                        <input type="text" name="lastName" required placeholder="กรอกนามสกุล" class="w-full px-4 py-2.5 bg-white border border-red-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm transition-all shadow-sm">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ส่วนที่ 2: เกณฑ์การประเมินผลปฏิบัติ -->
+            <div class="space-y-6">
+                <h2 class="text-lg font-bold text-red-900 flex items-center gap-2">
+                    <span class="w-2.5 h-5 bg-red-600 rounded-full"></span> 
+                    หัวข้อการประเมินของกรรมการ (3 ระดับ)
+                </h2>
+
+                <!-- ข้อ 1: ประเมินสถานการณ์ -->
+                <div class="p-5 border border-slate-200 rounded-2xl space-y-4 hover:border-red-300 transition-all shadow-sm">
+                    <div class="flex justify-between items-start gap-4">
+                        <span class="text-sm md:text-base font-semibold text-slate-800">
+                            <span class="text-red-600">1.</span> ประเมินสถานการณ์โดยรอบ (Scene Size-up)
+                        </span>
+                    </div>
+                    <!-- ตัวเลือกประเมิน 3 แบบ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q1" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-emerald-50 peer-checked:border-emerald-500 peer-checked:text-emerald-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติได้ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q1" value="ปฏิบัติบางส่วน/ไม่ถูกต้อง" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติบางส่วน/ไม่ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q1" value="ไม่ปฏิบัติ" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 hover:bg-slate-50 transition shadow-sm">
+                                ไม่ปฏิบัติ
+                            </span>
+                        </label>
+                    </div>
+                    <input type="text" name="note1" placeholder="ระบุเหตุผลหรือข้อเสนอแนะเพิ่มเติม..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-400">
+                </div>
+
+                <!-- ข้อ 2: ประเมินการทำ Direct pressure -->
+                <div class="p-5 border border-slate-200 rounded-2xl space-y-4 hover:border-red-300 transition-all shadow-sm">
+                    <div class="flex justify-between items-start gap-4">
+                        <span class="text-sm md:text-base font-semibold text-slate-800">
+                            <span class="text-red-600">2.</span> ประเมินการกดแผลโดยตรง (Direct pressure)
+                        </span>
+                    </div>
+                    <!-- ตัวเลือกประเมิน 3 แบบ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q2" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-emerald-50 peer-checked:border-emerald-500 peer-checked:text-emerald-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติได้ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q2" value="ปฏิบัติบางส่วน/ไม่ถูกต้อง" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติบางส่วน/ไม่ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q2" value="ไม่ปฏิบัติ" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 hover:bg-slate-50 transition shadow-sm">
+                                ไม่ปฏิบัติ
+                            </span>
+                        </label>
+                    </div>
+                    <input type="text" name="note2" placeholder="ระบุเหตุผลหรือข้อเสนอแนะเพิ่มเติม..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-400">
+                </div>
+
+                <!-- ข้อ 3: ประเมินการทำ wound packing -->
+                <div class="p-5 border border-slate-200 rounded-2xl space-y-4 hover:border-red-300 transition-all shadow-sm">
+                    <div class="flex justify-between items-start gap-4">
+                        <span class="text-sm md:text-base font-semibold text-slate-800">
+                            <span class="text-red-600">3.</span> ประเมินการบรรจุผ้าในบาดแผล (Wound packing)
+                        </span>
+                    </div>
+                    <!-- ตัวเลือกประเมิน 3 แบบ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q3" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-emerald-50 peer-checked:border-emerald-500 peer-checked:text-emerald-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติได้ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q3" value="ปฏิบัติบางส่วน/ไม่ถูกต้อง" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติบางส่วน/ไม่ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q3" value="ไม่ปฏิบัติ" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 hover:bg-slate-50 transition shadow-sm">
+                                ไม่ปฏิบัติ
+                            </span>
+                        </label>
+                    </div>
+                    <input type="text" name="note3" placeholder="ระบุเหตุผลหรือข้อเสนอแนะเพิ่มเติม..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-400">
+                </div>
+
+                <!-- ข้อ 4: ประเมินการใช้ tourniquet -->
+                <div class="p-5 border border-slate-200 rounded-2xl space-y-4 hover:border-red-300 transition-all shadow-sm">
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <span class="text-sm md:text-base font-semibold text-slate-800">
+                                <span class="text-red-600">4.</span> ประเมินการใช้สายรัดห้ามเลือด (Tourniquet)
+                            </span>
+                            <span class="block text-[11px] text-red-600 font-bold mt-1 bg-red-50 px-2 py-1 rounded-md inline-block">
+                                * ต้องใช้น้อยกว่า 30 วินาที
+                            </span>
+                        </div>
+                    </div>
+                    <!-- ตัวเลือกประเมิน 3 แบบ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q4" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-emerald-50 peer-checked:border-emerald-500 peer-checked:text-emerald-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติได้ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q4" value="ปฏิบัติบางส่วน/ไม่ถูกต้อง" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 hover:bg-slate-50 transition shadow-sm">
+                                ปฏิบัติบางส่วน/ไม่ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q4" value="ไม่ปฏิบัติ" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-medium border border-slate-300 rounded-xl peer-checked:bg-red-50 peer-checked:border-red-500 peer-checked:text-red-700 hover:bg-slate-50 transition shadow-sm">
+                                ไม่ปฏิบัติ
+                            </span>
+                        </label>
+                    </div>
+                    <input type="text" name="note4" placeholder="ระบุวินาทีที่ใช้ หรือบันทึกหมายเหตุเพิ่มเติม..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-400">
+                </div>
+
+                <!-- ข้อ 5: Keep warm (ไม่มีช่องหมายเหตุ) -->
+                <div class="p-5 border-2 border-red-200 rounded-2xl space-y-4 bg-red-50/20 shadow-sm relative">
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <span class="text-sm md:text-base font-bold text-red-950">
+                                <span class="text-red-600 font-extrabold">5.</span> การปฏิบัติระหว่างรอรถพยาบาลกู้ชีพขั้นสูง (ALS)
+                            </span>
+                            <span class="block text-xs text-slate-500 mt-1">
+                                (ประเมินการคลุมร่างกาย Keep Warm เพื่อรักษาอุณหภูมิร่างกาย)
+                            </span>
+                        </div>
+                    </div>
+                    <!-- ตัวเลือกประเมิน 3 แบบ -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q5" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-semibold border border-red-300 rounded-xl peer-checked:bg-emerald-600 peer-checked:border-emerald-600 peer-checked:text-white hover:bg-red-50/50 transition shadow-sm">
+                                ปฏิบัติได้ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q5" value="ปฏิบัติบางส่วน/ไม่ถูกต้อง" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-semibold border border-red-300 rounded-xl peer-checked:bg-amber-500 peer-checked:border-amber-500 peer-checked:text-white hover:bg-red-50/50 transition shadow-sm">
+                                ปฏิบัติบางส่วน/ไม่ถูกต้อง
+                            </span>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="q5" value="ไม่ปฏิบัติ" class="hidden peer">
+                            <span class="block text-center py-2.5 text-xs font-semibold border border-red-300 rounded-xl peer-checked:bg-red-600 peer-checked:border-red-600 peer-checked:text-white hover:bg-red-50/50 transition shadow-sm">
+                                ไม่ปฏิบัติ
+                            </span>
+                        </label>
+                    </div>
+                    <!-- ข้อนี้ไม่มีช่องหมายเหตุตามเงื่อนไขข้อ 5 -->
+                </div>
+            </div>
+
+            <!-- ปุ่มบันทึกผลการประเมิน -->
+            <button type="submit" id="submitBtn" class="w-full py-4 bg-red-700 hover:bg-red-800 text-white font-semibold rounded-2xl transition text-base shadow-md hover:shadow-lg active:transform active:scale-[0.99] flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+                ส่งผลการประเมินเข้าระบบ
+            </button>
+        </form>
     </div>
 
-    <!-- Stats Boxes -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-        <p class="text-sm font-medium text-slate-400 uppercase">จำนวนผู้ตอบแบบประเมินทั้งหมด</p>
-        <p id="totalResponses" class="text-3xl font-bold text-slate-800 mt-2">กำลังโหลด...</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-        <p class="text-sm font-medium text-slate-400 uppercase">คะแนนเฉลี่ยภาพรวม</p>
-        <p id="totalAvg" class="text-3xl font-bold text-green-600 mt-2">กำลังโหลด...</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-        <p class="text-sm font-medium text-slate-400 uppercase">อายุมัธยฐานผู้เรียน</p>
-        <p id="medianAge" class="text-3xl font-bold text-indigo-600 mt-2">กำลังโหลด...</p>
-      </div>
-    </div>
+    <script>
+        // ใส่ Web App URL ที่ได้จากขั้นตอน Deploy ใน Google Apps Script
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWR98aquOVZM5YckCGFeoybCufggSgZ9fUfWmjHo1dRiKWx_EtFsImbwe5p-0RQNfHug/exec";
 
-    <!-- Charts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-        <h3 class="font-bold text-slate-700 mb-4 text-base">คะแนนเฉลี่ยในแต่ละหัวข้อ</h3>
-        <canvas id="scoreChart" class="w-full max-h-80"></canvas>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-        <h3 class="font-bold text-slate-700 mb-4 text-base">สัดส่วนเพศผู้เข้าอบรม</h3>
-        <canvas id="genderChart" class="w-full max-h-80 mx-auto"></canvas>
-      </div>
-    </div>
+        document.getElementById('evaluationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                กำลังส่งข้อมูลบันทึกชีท...
+            `;
 
-    <!-- Suggestion list -->
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60">
-      <h3 class="font-bold text-slate-700 mb-4 text-base">ข้อเสนอแนะล่าสุด</h3>
-      <div id="suggestionBox" class="divide-y divide-slate-100 max-h-60 overflow-y-auto space-y-3 pr-2">
-        <p class="text-sm text-slate-400 py-2">กำลังดาวน์โหลดข้อมูล...</p>
-      </div>
-    </div>
-  </div>
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
 
-  <script>
-    // เรียกใช้ฟังก์ชันดึงข้อมูลจากหลังบ้าน
-    document.addEventListener("DOMContentLoaded", function() {
-      google.script.run.withSuccessHandler(renderDashboard).getDataForDashboard();
-    });
-
-    function renderDashboard(data) {
-      if (!data || data.length === 0) {
-        document.getElementById('totalResponses').innerText = "0 คน";
-        document.getElementById('totalAvg').innerText = "0.00";
-        document.getElementById('medianAge').innerText = "-";
-        document.getElementById('suggestionBox').innerHTML = "<p class='text-sm text-slate-400'>ยังไม่มีการบันทึกข้อมูลแบบประเมิน</p>";
-        return;
-      }
-
-      const total = data.length;
-      document.getElementById('totalResponses').innerText = `${total} คน`;
-
-      let totalSum = 0;
-      let scoreCount = 0;
-      let sumFields = [0,0,0,0,0,0,0,0]; 
-      let genderStats = {};
-      let ages = [];
-      let suggestionsHtml = '';
-
-      data.forEach(row => {
-        // ดึงคะแนน (ดัชนี 3 ถึง 10 บนชีตหลังจากตัดสถานที่ทำงานออก)
-        for(let i=3; i<=10; i++) {
-          let score = parseFloat(row[i]);
-          if(!isNaN(score)) {
-            sumFields[i-3] += score;
-            totalSum += score;
-            scoreCount++;
-          }
-        }
-        // สถิติเพศ (ดัชนี 1)
-        let gender = row[1] || 'ไม่ระบุ';
-        genderStats[gender] = (genderStats[gender] || 0) + 1;
-        // อายุ (ดัชนี 2)
-        if(row[2]) ages.push(parseFloat(row[2]));
-        // ข้อเสนอแนะ (ดัชนี 11)
-        if(row[11]) {
-          suggestionsHtml += `<div class="py-2 text-sm text-slate-600"><span class="font-medium text-slate-400 text-xs block">${new Date(row[0]).toLocaleDateString('th-TH')}</span>${row[11]}</div>`;
-        }
-      });
-
-      document.getElementById('totalAvg').innerText = (totalSum / scoreCount).toFixed(2);
-      
-      if(ages.length > 0) {
-        ages.sort((a, b) => a - b);
-        let mid = Math.floor(ages.length / 2);
-        let median = ages.length % 2 !== 0 ? ages[mid] : (ages[mid - 1] + ages[mid]) / 2;
-        document.getElementById('medianAge').innerText = `${median} ปี`;
-      }
-
-      document.getElementById('suggestionBox').innerHTML = suggestionsHtml || "<p class='text-sm text-slate-400'>ไม่มีข้อเสนอแนะเพิ่มเติม</p>";
-
-      // วาดกราฟแสดงคะแนนเฉลี่ยทั้ง 8 หัวข้อ
-      const avgScores = sumFields.map(sum => (sum / total).toFixed(2));
-      new Chart(document.getElementById('scoreChart'), {
-        type: 'bar',
-        data: {
-          labels: ['1.เนื้อหาตรงวัตถุประสงค์', '2.เนื้อหานำไปใช้ได้จริง', '3.การลำดับเนื้อหา', '4.ความเชี่ยวชาญวิทยากร', '5.การเปิดโอกาสซักถาม', '6.ความพร้อมอุปกรณ์', '7.เวลาที่เหมาะสม', '8.ระบบการจัดการ'],
-          datasets: [{
-            label: 'คะแนนเฉลี่ย',
-            data: avgScores,
-            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-            borderRadius: 8
-          }]
-        },
-        options: { responsive: true, scales: { y: { min: 1, max: 5 } } }
-      });
-
-      // วาดกราฟวงกลมแสดงสัดส่วนเพศ
-      new Chart(document.getElementById('genderChart'), {
-        type: 'doughnut',
-        data: {
-          labels: Object.keys(genderStats),
-          datasets: [{
-            data: Object.values(genderStats),
-            backgroundColor: ['#3b82f6', '#ec4899', '#64748b']
-          }]
-        },
-        options: { responsive: true }
-      });
-    }
-  </script>
+            // ส่งข้อมูลไปยัง Google Apps Script (ทำงานแบบ no-cors เพื่อให้เข้ากันได้กับเว็บสถิติทั่วไป เช่น GitHub Pages)
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alert('บันทึกผลการประเมินลง Google Sheets สำเร็จเรียบร้อย!');
+                document.getElementById('evaluationForm').reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('เกิดปัญหาขัดข้อง ไม่สามารถบันทึกข้อมูลได้');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                    ส่งผลการประเมินเข้าระบบ
+                `;
+            });
+        });
+    </script>
 </body>
 </html>
