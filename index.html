@@ -12,11 +12,19 @@
             font-family: 'Prompt', sans-serif; 
         }
     </style>
+    
+    <script>
+        // ========================================================
+        // ⚙️ [CONFIG] ตัวแปรควบคุมการเปิด-ปิด ฟอร์ม (ตั้งค่าตรงนี้ได้เลย)
+        // true = เปิดรับข้อมูลปกติ / false = ปิดรับข้อมูลและแสดงข้อความแจ้งเตือน
+        // ========================================================
+        const isFormOpen = false; 
+    </script>
 </head>
 <body class="bg-red-50/30 min-h-screen py-8 px-4">
 
     <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-red-100 overflow-hidden">
-        <!-- ส่วนหัว (Header) พร้อมโลโก้กากบาทกู้ชีพกู้ภัยสีแดงและธีมสีแดงเข้ม -->
+        <!-- ส่วนหัว (Header) พร้อมโลโก้และธีมสีแดงเข้ม -->
         <div class="bg-red-700 text-white p-8 text-center relative overflow-hidden">
             <!-- Background Accent Shape -->
             <div class="absolute right-0 bottom-0 w-32 h-32 bg-red-600 rounded-full translate-x-10 translate-y-10 opacity-40"></div>
@@ -34,7 +42,22 @@
             </div>
         </div>
 
-        <form id="evaluationForm" class="p-6 md:p-8 space-y-8">
+        <!-- 1. ส่วนแจ้งเตือนเมื่อปิดรับข้อมูล (ซ่อนไว้เริ่มต้นด้วยคลาส hidden) -->
+        <div id="closedMessage" class="hidden p-8 text-center space-y-4 my-4">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-50 text-amber-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                </svg>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800">ขณะนี้เรายังไม่เปิดรับการแสดงความคิดเห็น</h2>
+            <p class="text-slate-500 text-sm max-w-sm mx-auto">ระบบประเมินผลปิดการรับข้อมูลชั่วคราว หรือหมดเขตการส่งแบบประเมินแล้ว</p>
+            <div class="pt-4 border-t border-slate-100">
+                <p class="text-sm font-medium text-slate-600">ขอบคุณครับ</p>
+            </div>
+        </div>
+
+        <!-- 2. ฟอร์มกรอกข้อมูลเดิม (ซ่อนไว้เริ่มต้นด้วยคลาส hidden) -->
+        <form id="evaluationForm" class="hidden p-6 md:p-8 space-y-8">
             <!-- ส่วนที่ 1: ข้อมูลผู้เข้าสอบ -->
             <div class="bg-red-50/50 p-5 rounded-2xl border border-red-100">
                 <h2 class="text-lg font-bold text-red-900 mb-4 flex items-center gap-2">
@@ -67,7 +90,6 @@
                             <span class="text-red-600">1.</span> ประเมินสถานการณ์โดยรอบ (Scene Size-up)
                         </span>
                     </div>
-                    <!-- ตัวเลือกประเมิน 3 แบบ -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="q1" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
@@ -98,7 +120,6 @@
                             <span class="text-red-600">2.</span> ประเมินการกดแผลโดยตรง (Direct pressure)
                         </span>
                     </div>
-                    <!-- ตัวเลือกประเมิน 3 แบบ -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="q2" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
@@ -129,7 +150,6 @@
                             <span class="text-red-600">3.</span> ประเมินการบรรจุผ้าในบาดแผล (Wound packing)
                         </span>
                     </div>
-                    <!-- ตัวเลือกประเมิน 3 แบบ -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="q3" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
@@ -165,7 +185,6 @@
                             </span>
                         </div>
                     </div>
-                    <!-- ตัวเลือกประเมิน 3 แบบ -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="q4" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
@@ -189,7 +208,7 @@
                     <input type="text" name="note4" placeholder="ระบุวินาทีที่ใช้ หรือบันทึกหมายเหตุเพิ่มเติม..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:bg-white focus:ring-1 focus:ring-red-400">
                 </div>
 
-                <!-- ข้อ 5: Keep warm (ไม่มีช่องหมายเหตุ) -->
+                <!-- ข้อ 5: Keep warm -->
                 <div class="p-5 border-2 border-red-200 rounded-2xl space-y-4 bg-red-50/20 shadow-sm relative">
                     <div class="flex justify-between items-start gap-4">
                         <div>
@@ -201,7 +220,6 @@
                             </span>
                         </div>
                     </div>
-                    <!-- ตัวเลือกประเมิน 3 แบบ -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="q5" value="ปฏิบัติได้ถูกต้อง" required class="hidden peer">
@@ -222,7 +240,6 @@
                             </span>
                         </label>
                     </div>
-                    <!-- ข้อนี้ไม่มีช่องหมายเหตุตามเงื่อนไขข้อ 5 -->
                 </div>
             </div>
 
@@ -237,6 +254,20 @@
     </div>
 
     <script>
+        // ระบบสลับการแสดงผลหน้าจอ ดึงค่าจากตัวแปรควบคุมด้านบนสุด
+        document.addEventListener("DOMContentLoaded", () => {
+            const formElement = document.getElementById("evaluationForm");
+            const closedMessageElement = document.getElementById("closedMessage");
+
+            if (isFormOpen) {
+                formElement.classList.remove("hidden");
+                closedMessageElement.classList.add("hidden");
+            } else {
+                formElement.classList.add("hidden");
+                closedMessageElement.classList.remove("hidden");
+            }
+        });
+
         // ใส่ Web App URL ที่ได้จากขั้นตอน Deploy ใน Google Apps Script
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyWR98aquOVZM5YckCGFeoybCufggSgZ9fUfWmjHo1dRiKWx_EtFsImbwe5p-0RQNfHug/exec";
 
@@ -257,7 +288,6 @@
             const data = {};
             formData.forEach((value, key) => data[key] = value);
 
-            // ส่งข้อมูลไปยัง Google Apps Script (ทำงานแบบ no-cors เพื่อให้เข้ากันได้กับเว็บสถิติทั่วไป เช่น GitHub Pages)
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
